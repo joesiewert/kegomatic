@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 group :production do
   gem "rails_12factor"
+  gem "thin"
 end
 
 gem 'bootstrap-sass', '~> 3.3.1'
