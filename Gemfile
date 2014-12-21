@@ -5,6 +5,13 @@ group :production do
   gem "thin"
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'launchy'
+  gem 'pry-rails'
+end
+
 gem 'bootstrap-sass', '~> 3.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
