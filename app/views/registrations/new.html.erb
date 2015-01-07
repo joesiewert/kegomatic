@@ -1,0 +1,32 @@
+<%= form_for @user, url: signup_path do |f| %>
+  <div class='row'>
+    <div class='well col-md-offset-4 col-md-4'>
+      <h2 class='text-center'>Sign up for kegomatic</h2>
+
+      <% if @sign_up_errors %>
+        <p class='text-danger'>
+          <% @sign_up_errors.each do |message| %>
+            <%= message %>
+            <br>
+          <% end %>
+        </p>
+      <% end %>
+
+      <div class='form-group'>
+        <%= f.label :username, class: 'control-label' %>
+        <%= f.text_field :username, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :password, class: 'control-label' %>
+        <%= f.password_field :password, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.label :password_confirmation, class: 'control-label' %>
+        <%= f.password_field :password_confirmation, class: 'form-control' %>
+      </div>
+      <div class='form-group'>
+        <%= f.submit 'Sign Up', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+<% end %>
