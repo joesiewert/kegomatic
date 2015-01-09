@@ -19,11 +19,11 @@ class Scraper
       kegs.each do |keg|
         keg_name = keg.text
         keg_size = keg_name.slice!((/1/ =~ keg_name)..(keg_name.length))
-        keg_price = prices[count].text.slice(5..(prices[count].text.length))
+        keg_price = prices[count].text.slice(6..(prices[count].text.length))
 
         scrubbed_keg = {
           name: name_cleanup(keg_name.squish),
-          size: keg_size.squish,
+          size: size_cleanup(keg_size.squish),
           price: keg_price
         }
         scrubbed_kegs << scrubbed_keg
@@ -71,6 +71,17 @@ class Scraper
           'Sierra Nevada Pale Ale'
       else
         name
+      end
+    end
+
+    def size_cleanup(size)
+      case size
+        when '15G Keg'
+          '15.5G Keg'
+        when '15.5 Keg'
+          '15.5G Keg'
+      else
+        size
       end
     end
 
