@@ -5,37 +5,30 @@ class Scraper
   def get_kegs
     url1 = 'http://www.hazelsboulder.com/main.asp?request=search&type=B&sel_category=20977&user1=15.5+GALLON&pageNo=1'
     url2 = 'http://www.hazelsboulder.com/main.asp?request=search&type=B&sel_category=20977&user1=15.5+GALLON&pageNo=2'
-    page1 = Nokogiri::HTML(open(url1))
-    page2 = Nokogiri::HTML(open(url2))
+    urls = [url1, url2]
+    kegs = []
 
-    pages = [page1, page2]
-    scrubbed_kegs = []
+    urls.each do |url|
+      page = Nokogiri::HTML(open(url))
+      scraped_kegs = page.css("#rt-col table:nth-child(9) tr[valign='top'] table[width='100%']")
 
-    pages.each do |page|
-      kegs = page.css('a.producttitle')
-      prices = page.css('span.RegularPrice')
-      count = 0
-
-      kegs.each do |keg|
-        keg_name = keg.text
-        keg_size = keg_name.slice!((/1/ =~ keg_name)..(keg_name.length))
-        keg_price = prices[count].text.slice(6..(prices[count].text.length))
-
-        scrubbed_keg = {
-          name: name_cleanup(keg_name.squish),
-          size: size_cleanup(keg_size.squish),
-          price: keg_price
+      scraped_kegs.each do |scraped_keg|
+        keg = {
+          name: name_cleanup(scraped_keg.css('.producttitle').text),
+          size: size_cleanup(scraped_keg.css('.producttitle').text),
+          price: price_cleanup(scraped_keg.css('.RegularPrice').text),
+          sale_price: price_cleanup(scraped_keg.css('.SalePrice').text),
+          url: scraped_keg.css('a:first-of-type')[0]['href']
         }
-        scrubbed_kegs << scrubbed_keg
-
-        count += 1
+        kegs << keg
       end
     end
-    scrubbed_kegs
+    kegs
   end
 
   private
-    def name_cleanup(name)
+    def name_cleanup(scraped_name)
+      name = scraped_name[0..(/1/ =~ scraped_name)-1].squish
       case name
         when 'Avery Ellies Brown'
           'Avery Ellie’s Brown Ale'
@@ -74,7 +67,8 @@ class Scraper
       end
     end
 
-    def size_cleanup(size)
+    def size_cleanup(scraped_size)
+      size = scraped_size[(/1/ =~ scraped_size)..scraped_size.length].squish
       case size
         when '15G Keg'
           '15.5G Keg'
@@ -82,6 +76,14 @@ class Scraper
           '15.5G Keg'
       else
         size
+      end
+    end
+
+    def price_cleanup(scraped_price)
+      if scraped_price.empty?
+        nil
+      else
+        scraped_price[(/\$/ =~ scraped_price)+1..scraped_price.length].squish
       end
     end
 
