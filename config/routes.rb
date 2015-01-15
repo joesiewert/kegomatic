@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  root 'authentication#new'
-
+  root 'elections#index'
+  resources :users, only: [:show]
+  resources :admin, only: [:index]
+  namespace :admin do
+    resources :kegs, only: [] do
+      post :sync, on: :collection
+    end
+  end
   get 'signup' => 'registrations#new', as: :signup
   post 'signup' => 'registrations#create'
   get 'signin' => 'authentication#new', as: :signin
