@@ -18,19 +18,19 @@ describe AuthenticationController do
   end
 
   describe '#create' do
-    it 'redirects user to elections path after signin' do
+    it 'redirects user to root path after signin' do
       user = create_user
       post :create, username: user.username, password: user.password
-      expect(response).to redirect_to(elections_path)
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe '#destroy' do
-    it 'redirects user to root path after signout' do
+    it 'redirects user to signin path after signout' do
       user = create_user
       session[:user_id] = user.id
       get :destroy
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(signin_path)
     end
   end
 

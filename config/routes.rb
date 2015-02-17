@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'elections#index'
-  resources :elections, only: [:index]
   resources :users, only: [:show]
   resources :admin, only: [:index]
   namespace :admin do

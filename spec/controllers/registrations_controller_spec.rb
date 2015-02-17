@@ -18,14 +18,14 @@ describe RegistrationsController do
   end
 
   describe '#create' do
-    it 'redirects user to elections path after signup' do
+    it 'redirects user to root path after signup' do
       password = Faker::Internet.password
       post :create, user: {
         username: Faker::Internet.user_name,
         password: password,
         password_confirmation: password
       }
-      expect(response).to redirect_to(elections_path)
+      expect(response).to redirect_to(root_path)
     end
   end
 
