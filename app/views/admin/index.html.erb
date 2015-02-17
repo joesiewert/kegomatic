@@ -6,7 +6,7 @@
   <div class='col-md-4'>
     <div class='well'>
       <h4>Elections</h4>
-      <%= button_to 'Create Election', admin_elections_path, class: 'btn btn-primary' %>
+      <%= button_to 'Start Election', start_admin_elections_path, class: 'btn btn-primary' %>
     </div>
   </div>
   <div class='col-md-4'>
@@ -20,6 +20,32 @@
     </div>
   </div>
 </div>
+
+<div class='page-header'>
+  <h1>Current Elections (<%= @current_elections.count %>)</h1>
+</div>
+
+<table class='table table-striped table-bordered'>
+  <thead>
+    <tr>
+      <th><h4>Votes Cast</h4></th>
+      <th><h4>Leading Keg</h4></th>
+      <th><h4>Start Time</h4></th>
+      <th><h4>End Election</h4></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @current_elections.each do |election| %>
+      <tr>
+        <td>Show some votes</td>
+        <td>Show current leader</td>
+        <td><%= time_ago_in_words(election.created_at).capitalize %> ago</td>
+        <td><%= button_to 'End', end_admin_election_path(election), class: 'btn btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <div class='page-header'>
   <h1>Kegs (<%= @kegs.count %>)</h1>

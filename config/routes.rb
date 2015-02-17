@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   resources :admin, only: [:index]
   namespace :admin do
     resources :elections, only: [] do
-      post :create, on: :collection
+      post :start, on: :collection
+      post :end, on: :member
     end
     resources :kegs, only: [] do
       post :sync, on: :collection
