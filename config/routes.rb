@@ -2,15 +2,22 @@ Rails.application.routes.draw do
   root 'elections#index'
   resources :users, only: [:show]
   resources :admin, only: [:index]
+
   namespace :admin do
     resources :elections, only: [] do
       post :start, on: :collection
       post :end, on: :member
     end
+
     resources :kegs, only: [] do
       post :sync, on: :collection
     end
   end
+
+  resources :elections, only: [] do
+    resources :votes, only: [:create]
+  end
+
   get 'signup' => 'registrations#new', as: :signup
   post 'signup' => 'registrations#create'
   get 'signin' => 'authentication#new', as: :signin

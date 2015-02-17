@@ -1,3 +1,14 @@
 <div class='page-header'>
-  <h1>Elections</h1>
+  <h1>Cast Your Vote!</h1>
+</div>
+
+<div class='row'>
+  <div class='col-sm-4'>
+    <%= form_for [@election, @vote] do |f| %>
+      <div class='form-group'>
+        <%= f.collection_select(:keg_id, Keg.where(active: true).order(:name), :id, :name, {include_blank: 'Please select a keg'}, {class: 'form-control'}) %>
+      </div>
+      <%= f.submit 'Vote', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
 </div>
