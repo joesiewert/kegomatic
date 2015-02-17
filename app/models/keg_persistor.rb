@@ -23,7 +23,8 @@ class KegPersistor
         size: keg[:size],
         price: keg[:price],
         sale_price: keg[:sale_price],
-        url: keg[:url]
+        url: keg[:url],
+        active: true
       }
 
       if db_keg.new_record?
@@ -37,8 +38,10 @@ class KegPersistor
 
     Keg.all.each do |db_keg|
       unless keg_names.include?(db_keg.name)
-        result[:deleted] += 1
-        db_keg.destroy
+        if db_keg.active == true
+          result[:deleted] += 1
+          db_keg.update(active: false)
+        end
       end
     end
 

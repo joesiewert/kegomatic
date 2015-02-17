@@ -19,6 +19,7 @@ describe KegPersistor do
       expect(Keg.first[:price]).to eq(scraped_kegs[0][:price].to_f)
       expect(Keg.first[:sale_price]).to eq(scraped_kegs[0][:sale_price])
       expect(Keg.first[:url]).to eq(scraped_kegs[0][:url])
+      expect(Keg.first[:active]).to eq(true)
     end
 
     it 'updates data for kegs that are already in the db and returns updated count' do
@@ -27,7 +28,8 @@ describe KegPersistor do
         size: '15.5G Keg',
         price: '128.98',
         sale_price: nil,
-        url: 'http://www.hazelsboulder.com/sku130993.html'
+        url: 'http://www.hazelsboulder.com/sku130993.html',
+        active: true
       )
 
       scraped_keg = [
@@ -42,19 +44,21 @@ describe KegPersistor do
       expect(Keg.first[:sale_price]).to eq(scraped_keg[0][:sale_price].to_f)
     end
 
-    it 'deletes kegs from the db that are no longer in the scraper list and returns deleted count' do
+    it 'sets kegs in the db that are no longer in the scraper list to inactive and returns deleted count' do
       keg = Keg.create!(
         name: 'Avery IPA',
         size: '15.5G Keg',
         price: '128.98',
         sale_price: nil,
-        url: 'http://www.hazelsboulder.com/sku130993.html'
+        url: 'http://www.hazelsboulder.com/sku130993.html',
+        active: true
       )
 
       result = KegPersistor.new([]).persist
 
-      expect(Keg.find_by_id(keg.id)).to be_nil
+      expect(Keg.all.count).to eq(1)
       expect(result[:deleted]).to eq(1)
+      expect(Keg.first[:active]).to eq(false)
     end
 
   end
