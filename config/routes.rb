@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   resources :admin, only: [:index]
   namespace :admin do
+    resources :elections, only: [] do
+      post :create, on: :collection
+    end
     resources :kegs, only: [] do
       post :sync, on: :collection
     end
