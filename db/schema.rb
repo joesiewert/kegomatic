@@ -11,10 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217170545) do
+ActiveRecord::Schema.define(version: 20150217193822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "elections", force: true do |t|
+    t.boolean  "active",     default: false
+    t.integer  "keg_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "kegs", force: true do |t|
     t.string   "name"
