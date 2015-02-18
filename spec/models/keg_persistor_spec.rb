@@ -12,7 +12,7 @@ describe KegPersistor do
 
       result = KegPersistor.new(scraped_kegs).persist
 
-      expect(Keg.all.count).to eq(3)
+      expect(Keg.count).to eq(3)
       expect(result[:added]).to eq(3)
       expect(Keg.first[:name]).to eq(scraped_kegs[0][:name])
       expect(Keg.first[:size]).to eq(scraped_kegs[0][:size])
@@ -38,7 +38,7 @@ describe KegPersistor do
 
       result = KegPersistor.new(scraped_keg).persist
 
-      expect(Keg.all.count).to eq(1)
+      expect(Keg.count).to eq(1)
       expect(result[:updated]).to eq(1)
       expect(Keg.first[:price]).to eq(scraped_keg[0][:price].to_f)
       expect(Keg.first[:sale_price]).to eq(scraped_keg[0][:sale_price].to_f)
@@ -56,7 +56,7 @@ describe KegPersistor do
 
       result = KegPersistor.new([]).persist
 
-      expect(Keg.all.count).to eq(1)
+      expect(Keg.count).to eq(1)
       expect(result[:deleted]).to eq(1)
       expect(Keg.first[:active]).to eq(false)
     end
